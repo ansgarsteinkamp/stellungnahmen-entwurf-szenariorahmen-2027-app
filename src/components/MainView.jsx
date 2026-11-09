@@ -27,6 +27,7 @@ function makeState({ view, themaIdx = null, orgNr = null, selectedBereich = null
 export default function MainView({ organisationen, themen, bereiche }) {
    const [navState, setNavState] = useState(() => makeState({ view: "dashboard" }));
    const skipPushRef = useRef(false);
+   const [suchbegriff, setSuchbegriff] = useState(""); // bleibt beim Wechsel zur Organisation und zurück erhalten
 
    const orgMap = useMemo(() => buildOrgMap(organisationen), [organisationen]);
 
@@ -134,7 +135,7 @@ export default function MainView({ organisationen, themen, bereiche }) {
             {navState.view === "akteursgruppen" && (
                <AkteursgruppenView organisationen={organisationen} selectedGruppe={navState.selectedGruppe} onSelectGruppe={selectGruppe} onNavigateToOrg={navigateToOrg} />
             )}
-            {navState.view === "suche" && <SucheView organisationen={organisationen} onNavigateToOrg={navigateToOrg} />}
+            {navState.view === "suche" && <SucheView organisationen={organisationen} query={suchbegriff} setQuery={setSuchbegriff} onNavigateToOrg={navigateToOrg} />}
          </main>
       </div>
    );

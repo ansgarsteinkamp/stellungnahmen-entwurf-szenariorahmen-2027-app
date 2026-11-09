@@ -3,7 +3,7 @@ import { ArrowRight, ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SearchInput from "@/components/custom/SearchInput";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { highlightParts, highlightAll } from "@/lib/helpers";
+import { highlightParts, highlightAll, normalize, stripMarkdown } from "@/lib/helpers";
 
 function Highlight({ parts }) {
    if (!parts) return null;
@@ -28,8 +28,9 @@ function countMatches(lower, q) {
    return n;
 }
 
-export default function SucheView({ organisationen, onNavigateToOrg }) {
-   const [query, setQuery] = useState("");
+export default function SucheView({ organisationen, query, setQuery, onNavigateToOrg }) {
+   // Gesucht und angezeigt wird der Volltext ohne Markdown-Syntax
+   const texte = useMemo(() => organisationen.map(org => ({ org, text: stripMarkdown(org.dokument) })), [organisationen]);
    const deferredQuery = useDeferredValue(query);
    const [expanded, setExpanded] = useState(new Set());
 
@@ -43,18 +44,18 @@ export default function SucheView({ organisationen, onNavigateToOrg }) {
 
    const results = useMemo(() => {
       if (deferredQuery.length < 2) return null;
-      const q = deferredQuery.toLowerCase();
+      const q = normalize(deferredQuery);
 
       const matched = [];
-      for (const org of organisationen) {
-         const lower = org.dokument.toLowerCase();
+      for (const { org, text } of texte) {
+         const lower = normalize(text);
          if (lower.includes(q)) {
-            matched.push({ org, count: countMatches(lower, q), textParts: highlightParts(org.dokument, deferredQuery) });
+            matched.push({ org, text, count: countMatches(lower, q), textParts: highlightParts(text, deferredQuery) });
          }
       }
 
       return matched.sort((a, b) => b.count - a.count);
-   }, [deferredQuery, organisationen]);
+   }, [deferredQuery, texte]);
 
    const isStale = query !== deferredQuery;
 
@@ -62,10 +63,10 @@ export default function SucheView({ organisationen, onNavigateToOrg }) {
       <div className="h-full flex flex-col">
          <div className="p-4 lg:p-6 border-b border-border shrink-0">
             <div className="max-w-4xl mx-auto">
-               <SearchInput value={query} setValue={setQuery} placeholder="Ungekürzte Stellungnahmen durchsuchen..." />
+               <SearchInput value={query} setValue={setQuery} placeholder="Wort oder Wortfolge in den ungekürzten Stellungnahmen suchen..." />
                {results && (
                   <div className="text-xs text-muted-foreground mt-2">
-                     {results.length} Stellungnahme{results.length !== 1 && "n"} mit Treffern für &ldquo;{deferredQuery}&rdquo;
+                     {results.length} Stellungnahme{results.length !== 1 && "n"} mit Treffern für "{deferredQuery}"
                      {isStale && <span className="text-foreground/30 ml-2">Suche&hellip;</span>}
                   </div>
                )}
@@ -101,7 +102,7 @@ export default function SucheView({ organisationen, onNavigateToOrg }) {
                                  {isExpanded && (
                                     <div className="px-3 pb-3 pt-2 border-t border-border/40">
                                        <p className="text-xs text-foreground/70 leading-relaxed whitespace-pre-line">
-                                          <Highlight parts={highlightAll(r.org.dokument, deferredQuery)} />
+                                          <Highlight parts={highlightAll(r.text, deferredQuery)} />
                                        </p>
                                        <button onClick={() => onNavigateToOrg(r.org.nr)} className="flex items-center gap-1 text-xs text-primary hover:underline mt-2">
                                           Zur Organisation

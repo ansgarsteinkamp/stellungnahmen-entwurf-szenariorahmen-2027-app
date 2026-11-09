@@ -42,7 +42,7 @@ Kein Test-Runner oder Linter konfiguriert.
 - `src/components/SucheView.jsx` — Volltextsuche über die ungekürzten Stellungnahmen.
 - `src/components/viz/NetworkGraph.jsx` — Force-Graph der thematischen Überlappung zwischen Organisationen.
 - `src/components/custom/` — Projektspezifische Komponenten (`SearchInput`, `Markdown`, `OrgSummaryList`).
-- `src/lib/helpers.js` — OrgMap, Bereichs-Label, Gruppierung nach Akteursgruppe, Highlighting.
+- `src/lib/helpers.js` — OrgMap, Bereichs-Label, Gruppierung nach Akteursgruppe, Suche (`stripMarkdown`: Suche über den Volltext ohne Markdown-Syntax; `normalize`: Kleinschreibung, H₂ = H2), Highlighting.
 - `src/lib/similarity.js` — Jaccard-Ähnlichkeit für den NetworkGraph.
 
 ## Datenmodell (quelldaten.json)

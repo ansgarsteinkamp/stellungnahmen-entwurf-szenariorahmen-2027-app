@@ -3,13 +3,14 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SearchInput from "@/components/custom/SearchInput";
 import OrgSummaryList from "@/components/custom/OrgSummaryList";
+import { normalize } from "@/lib/helpers";
 
 export default function ThemenView({ themen, orgMap, selectedIdx, onSelectIdx, onNavigateToOrg }) {
    const [search, setSearch] = useState("");
 
    const filtered = useMemo(() => {
-      const q = search.toLowerCase();
-      return themen.map((t, i) => ({ ...t, _idx: i })).filter(t => !q || t.thema.toLowerCase().includes(q) || t.beschreibung.toLowerCase().includes(q));
+      const q = normalize(search);
+      return themen.map((t, i) => ({ ...t, _idx: i })).filter(t => !q || normalize(t.thema).includes(q) || normalize(t.beschreibung).includes(q));
    }, [themen, search]);
 
    const sorted = useMemo(() => {

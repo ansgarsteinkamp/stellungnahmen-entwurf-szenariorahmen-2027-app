@@ -60,7 +60,7 @@ export default function AkteursgruppenView({ organisationen, selectedGruppe, onS
                   </div>
 
                   <p className="mt-5 text-xs text-muted-foreground leading-relaxed border-l-4 border-primary/40 pl-4">
-                     <strong className="text-foreground">Hinweis:</strong> Die Akteursgruppe ist die Klassifizierung, die die Bundesnetzagentur auf dem Deckblatt jeder Einreichung vermerkt hat. Wo dieses Feld leer war, wurde die Gruppe nachträglich anhand der einreichenden Organisation zugeordnet.
+                     <strong className="text-foreground">Hinweis:</strong> Die Akteursgruppe ist die Klassifizierung, die auf dem Deckblatt der Bundesnetzagentur zur Einreichung vermerkt ist. Wo dieses Feld leer war, wurde die Gruppe nachträglich anhand der einreichenden Organisation zugeordnet.
                   </p>
 
                   <div className="mt-8">

@@ -63,7 +63,7 @@ function ChartSection({ title, children }) {
 
 export default function Dashboard({ themen, organisationen, orgMap, bereiche, onNavigateToThema, onNavigateToOrg, onNavigateToBereich, onNavigateToGruppe }) {
    const stats = useMemo(() => {
-      const avgOrgsPerThema = (themen.reduce((s, t) => s + t.organisationen.length, 0) / themen.length).toFixed(1);
+      const avgOrgsPerThema = (themen.reduce((s, t) => s + t.organisationen.length, 0) / themen.length).toFixed(1).replace(".", ",");
 
       // Count themes per org
       const themesPerOrg = new Map();
@@ -72,7 +72,7 @@ export default function Dashboard({ themen, organisationen, orgMap, bereiche, on
             themesPerOrg.set(nr, (themesPerOrg.get(nr) || 0) + 1);
          }
       }
-      const avgThemesPerOrg = ([...themesPerOrg.values()].reduce((s, c) => s + c, 0) / organisationen.length).toFixed(1);
+      const avgThemesPerOrg = ([...themesPerOrg.values()].reduce((s, c) => s + c, 0) / organisationen.length).toFixed(1).replace(".", ",");
 
       const sortedThemen = themen.map((t, i) => ({ thema: t.thema, count: t.organisationen.length, idx: i })).sort((a, b) => b.count - a.count);
       const topThemen = sortedThemen.slice(0, 10);

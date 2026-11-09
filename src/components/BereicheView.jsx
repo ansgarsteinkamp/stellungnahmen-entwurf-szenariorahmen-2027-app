@@ -83,7 +83,7 @@ export default function BereicheView({ bereiche, orgMap, selectedBereich, onSele
                      </div>
                   ) : (
                      <p className="mt-5 text-sm text-foreground/80 leading-relaxed border-l-4 border-primary/40 pl-4">
-                        Positionen, die keinem der elf Fragenkomplexe des Begleitdokuments zuzuordnen sind, z.B. zum Verfahren, zum Wasserstoff-Kernnetz, zum ausreichenden Maß an FZK, zu L-Gas, zur Verzahnung mit dem Szenariorahmen Strom oder zu Planungs- und Genehmigungsfragen.
+                        Positionen, die keinem der elf Fragenkomplexe Gas/Wasserstoff des Begleitdokuments zuzuordnen sind, z.B. zur integrierten Planung, zu Klimaschutz und Planungsrisiken, zu Druckbedingungen im Wasserstoffnetz, zu Netzentgelten und heimischer Erdgasförderung, zum Verfahren, zur Denkmalpflege sowie Anmerkungen zum zeitgleich konsultierten Szenariorahmen Strom.
                      </p>
                   )}
 

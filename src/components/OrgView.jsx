@@ -98,7 +98,9 @@ export default function OrgView({ organisationen, themen, bereiche, orgMap, sele
                      >
                         <div className="flex items-center gap-2">
                            <span className="text-sm font-medium text-primary">{o.abkürzung}</span>
-                           <span className="text-xs text-muted-foreground">{themeCountByOrg.get(Number(o.nr)) || 0} Themen</span>
+                           <span className="text-xs text-muted-foreground">
+                              {themeCountByOrg.get(Number(o.nr)) || 0} {themeCountByOrg.get(Number(o.nr)) === 1 ? "Thema" : "Themen"}
+                           </span>
                         </div>
                         <div className="text-xs text-foreground/60 truncate mt-0.5">{o.organisation}</div>
                      </button>

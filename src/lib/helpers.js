@@ -6,10 +6,26 @@ export function buildOrgMap(organisationen) {
    return map;
 }
 
+// Für die Suche: Markdown-Syntax entfernen (Überschriften, Hervorhebungen, Tabellen, Links, Fußnotenmarker)
+export function stripMarkdown(md) {
+   return md
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+      .replace(/\[\^\d+\]:?/g, "")
+      .replace(/^\|?[\s:|-]*-[\s:|-]*\|?$/gm, "")
+      .replace(/^#+\s*/gm, "")
+      .replace(/[*`\\]/g, "")
+      .replace(/ *\| */g, "  ");
+}
+
+// Für die Suche: Kleinschreibung und tiefgestellte Ziffern als normale Ziffern (H₂ = H2, CO₂ = CO2); Länge bleibt gleich
+export function normalize(text) {
+   return text.toLowerCase().replace(/[₀-₉]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x2050));
+}
+
 export function highlightAll(text, query) {
    if (!text || !query || query.length < 2) return null;
-   const lower = text.toLowerCase();
-   const q = query.toLowerCase();
+   const lower = normalize(text);
+   const q = normalize(query);
    if (!lower.includes(q)) return null;
 
    const parts = [];
@@ -27,8 +43,8 @@ export function highlightAll(text, query) {
 
 export function highlightParts(text, query, contextChars = 100) {
    if (!text || !query || query.length < 2) return null;
-   const lower = text.toLowerCase();
-   const q = query.toLowerCase();
+   const lower = normalize(text);
+   const q = normalize(query);
    const idx = lower.indexOf(q);
    if (idx === -1) return null;
 
@@ -38,7 +54,7 @@ export function highlightParts(text, query, contextChars = 100) {
 
    const parts = [];
    let lastIdx = 0;
-   const snippetLower = snippet.toLowerCase();
+   const snippetLower = normalize(snippet);
    let matchIdx = snippetLower.indexOf(q);
    while (matchIdx !== -1) {
       if (matchIdx > lastIdx) parts.push({ text: snippet.slice(lastIdx, matchIdx), hl: false });
